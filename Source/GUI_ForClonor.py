@@ -361,7 +361,7 @@ class GenFrame(wx.Frame):
 		DP = self.SetPriors.GiveD()
 		TP = self.SetPriors.GiveT()
 		RP = self.SetPriors.GiveR()
-		self.proc = subprocess.call(['Clonor', '-a', aP, '-x', XP, '-y', YP, '-z', ZP, 
+		self.proc = subprocess.Popen(['Clonor', '-a', aP, '-x', XP, '-y', YP, '-z', ZP, 
 				'-D', DP, '-T', TP, '-R', RP, NP, IP, OP])
 
 #		poll = self.proc.poll()
