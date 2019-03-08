@@ -1,4 +1,4 @@
-I leave this notes if you wish to continue working on this projet.
+I leave these notes if you wish to continue working on this projet.
 
 ####################################################################################
 #Installing Python and wxPython
