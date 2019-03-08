@@ -370,11 +370,13 @@ class GenFrame(wx.Frame):
 
 	def OnCloseWindow(self, event):
 
-		dial = wx.MessageDialog(None, 'Are you sure you want to quit', 'Question',
+		dial = wx.MessageDialog(None, 'Are you sure you want to quit? Exiting the GUI will also cause Clonor to terminate too', 
+					'Question',
 		wx.YES_NO |wx.NO_DEFAULT | wx.ICON_QUESTION)
 		ret = dial.ShowModal()
 
 		if ret == wx.ID_YES:
+			self.proc.terminate()
 			self.Destroy()
 		else:
 			event.Veto()
