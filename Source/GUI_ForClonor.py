@@ -314,8 +314,10 @@ class GenFrame(wx.Frame):
 		CreatePanel.SetBackgroundColour('white')
 		
 		CreateSizer = wx.BoxSizer(wx.HORIZONTAL)
-		Click = Button1(CreatePanel, 'Click', 'Click the button')
-		CreateSizer.Add(Click, proportion = 0, flag = wx.ALIGN_RIGHT)
+		self.Click = Button1(CreatePanel, 'Click', 'Click the button')
+		CreateSizer.Add(self.Click, proportion = 0, flag = wx.ALIGN_RIGHT)
+		Terminate = Button1(CreatePanel, 'Terminate', 'Terminate the process')
+		CreateSizer.Add(Terminate, proportion = 0, flag = wx.ALIGN_RIGHT)
 		CreatePanel.SetSizer(CreateSizer)
 
 		self.MainSizer = wx.BoxSizer(wx.VERTICAL)
@@ -340,12 +342,15 @@ class GenFrame(wx.Frame):
 		self.Bind(wx.EVT_MENU, self.OnSwitchPanels, switchItem)
 		self.Bind(wx.EVT_MENU, self.ToggleStatusBar, self.StatusItem)
 
-		Click.Bind(wx.EVT_BUTTON, self.InitiateClonalOrigin)
-
+		self.Click.Bind(wx.EVT_BUTTON, self.InitiateClonor)
+		Terminate.Bind(wx.EVT_BUTTON, self.TerminateProcess)
 #		################################
 #		ALL FUNCTIONS LEADING TO EVENTS WITHIN MENU(in alphapetical order)
 
-	def InitiateClonalOrigin(self, event):
+	def InitiateClonor(self, event):
+	
+		self.Click.Disable()		
+
 		IP = self.InitiateCO.GiveFasta()
 		NP = self.InitiateCO.GiveNewick()
 		OP = self.InitiateCO.GiveOutput()
@@ -356,9 +361,12 @@ class GenFrame(wx.Frame):
 		DP = self.SetPriors.GiveD()
 		TP = self.SetPriors.GiveT()
 		RP = self.SetPriors.GiveR()
-		subprocess.call(['Clonor', '-a', aP, '-x', XP, '-y', YP, '-z', ZP, 
-				'-D', DP, '-T', TP, '-R', RP, NP, IP, OP])
-	
+		self.proc = subprocess.Popen(['python', 'C:\Python37\Practice\Test.py'])
+
+#		poll = self.proc.poll()
+#		if poll != None:
+#			self.Click.Enable()
+
 	def OnCloseWindow(self, event):
 
 		dial = wx.MessageDialog(None, 'Are you sure you want to quit', 'Question',
@@ -383,15 +391,18 @@ class GenFrame(wx.Frame):
 			self.SetPriors.Show()
 			self.InitiateCO.Hide()
 		self.Layout()
-			
-	
+
+	def TerminateProcess(self, event):
+		self.proc.terminate()
+		self.Click.Enable()
+
 	def ToggleStatusBar(self, event):
 		if self.StatusItem.IsChecked():
 			self.Statusbar.Show()
 		else:
 			self.Statusbar.Hide()
 		self.Layout()
-
+		
 ##################################################################################################
 ##################################################################################################
 
